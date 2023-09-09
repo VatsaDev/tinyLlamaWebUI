@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TinyLlama WebUI</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lato&family=Roboto:wght@400&display=swap");
+
+      * {
+        box-sizing: border-box;
+        font-family: "Lato", sans-serif;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        background-color: #121212;
+        color: #cac4c4;
+      }
+
+      #title {
+        font-size: 8vw;
+        text-align: center;
+        background: rgb(255, 240, 82);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 240, 82, 1) 0%,
+          rgba(255, 155, 34, 1) 51%,
+          rgba(255, 59, 236, 1) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      #wrapper {
+        width: 60%;
+        margin: auto;
+      }
+
+      #text {
+        width: 80%;
+        padding: 10px;
+        margin-left: 5%;
+        border-radius: 5px;
+      }
+      button {
+        width: 30%;
+        font-size: 16px;
+        padding: 10px;
+        margin-left: 5%;
+        border-radius: 5px;
+        background: rgb(255, 240, 82);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 240, 82, 1) 0%,
+          rgba(255, 155, 34, 1) 51%,
+          rgba(255, 59, 236, 1) 100%
+        );
+        border: none;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Tiny Llama</h1>
+    <div id="wrapper">
+      <textarea name="text" id="text" cols="30" rows="10">
+Baby Llamas are cute because...
+        </textarea
+      ><br /><br />
+      <button onclick="callModel(document.getElementById('text').value)">
+        Generate
+      </button>
+    </div>
+    <script>
+      function callModel(context) {
+        const url = `/respond?input='${context}'`;
+
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "ngrok-skip-browser-warning": "000",
+          },
+        })
+          .then(async (response) => {
+            const data = await response.text();
+            console.log(data);
+            document.getElementById("text").value = `${
+              document.getElementById("text").value
+            } ${data}`;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    </script>
+  </body>
+</html>
